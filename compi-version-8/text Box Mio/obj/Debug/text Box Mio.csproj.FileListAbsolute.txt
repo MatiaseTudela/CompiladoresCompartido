@@ -1,0 +1,13 @@
+W:\Facu\Compiladores\compi-version-8-2013-master1\compi-version-8-2013-master\text Box Mio\bin\Debug\zsc.exe
+W:\Facu\Compiladores\compi-version-8-2013-master1\compi-version-8-2013-master\text Box Mio\bin\Debug\zsc.pdb
+W:\Facu\Compiladores\compi-version-8-2013-master1\compi-version-8-2013-master\text Box Mio\bin\Debug\nunit.framework.xml
+W:\Facu\Compiladores\compi-version-8-2013-master1\compi-version-8-2013-master\text Box Mio\obj\Debug\text Box Mio.csprojResolveAssemblyReference.cache
+W:\Facu\Compiladores\compi-version-8-2013-master1\compi-version-8-2013-master\text Box Mio\obj\Debug\at.jku.ssw.cc.acerca_de.resources
+W:\Facu\Compiladores\compi-version-8-2013-master1\compi-version-8-2013-master\text Box Mio\obj\Debug\text_Box_Mio.continuar.resources
+W:\Facu\Compiladores\compi-version-8-2013-master1\compi-version-8-2013-master\text Box Mio\obj\Debug\at.jku.ssw.cc.Form1.resources
+W:\Facu\Compiladores\compi-version-8-2013-master1\compi-version-8-2013-master\text Box Mio\obj\Debug\at.jku.ssw.cc.FrmContinuar.resources
+W:\Facu\Compiladores\compi-version-8-2013-master1\compi-version-8-2013-master\text Box Mio\obj\Debug\at.jku.ssw.cc.FrmContinuarMaqVirtual.resources
+W:\Facu\Compiladores\compi-version-8-2013-master1\compi-version-8-2013-master\text Box Mio\obj\Debug\text_Box_Mio.Properties.Resources.resources
+W:\Facu\Compiladores\compi-version-8-2013-master1\compi-version-8-2013-master\text Box Mio\obj\Debug\text Box Mio.csproj.GenerateResource.Cache
+W:\Facu\Compiladores\compi-version-8-2013-master1\compi-version-8-2013-master\text Box Mio\obj\Debug\zsc.exe
+W:\Facu\Compiladores\compi-version-8-2013-master1\compi-version-8-2013-master\text Box Mio\obj\Debug\zsc.pdb
