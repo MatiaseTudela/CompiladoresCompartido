@@ -106,125 +106,133 @@ namespace at.jku.ssw.cc //Compilador //text_Box_Mio
 
                 //compilerForm_Load(this, new EventArgs());
             }
-        public void compilar()
-           {
-               richTextBox8.Visible = false;
-               richTextBox9.Visible = false;
-               richTextBox2.Visible = true;
-               pictureBox2.Visible = false;
-               tabControl2.Visible = true;
-               Editor = (RichTextBox)pestania.SelectedTab.Controls[0];
-               // pantalla.Visible = true; //Pantalla del monitorcito
-               //pictureBox1.Visible = true;  //monitorcito
-               errorEnComilacion = false;
-               //para usar luego como cil[nroDeInstrCorriente].indBrFalse = brfalseVar[x.relop - Token.EQ]; //BGEenum, etc 
-               //para branches condicionales
-               //  public enum BrfalseENUM { BNEenum, BLTenum, BLEenum, BGTenum, BGEenum, BEQenum };
-               Code.brfalseVar = new Code.BrfalseENUM[6];
-               Code.brfalseVar[0] = (Code.BrfalseENUM)Code.BrfalseENUM.BNEenum;
-               Code.brfalseVar[1] = (Code.BrfalseENUM)Code.BrfalseENUM.BLTenum;
-               Code.brfalseVar[2] = (Code.BrfalseENUM)Code.BrfalseENUM.BLEenum;
-               Code.brfalseVar[3] = (Code.BrfalseENUM)Code.BrfalseENUM.BGTenum;
-               Code.brfalseVar[4] = (Code.BrfalseENUM)Code.BrfalseENUM.BGEenum;
-               Code.brfalseVar[5] = (Code.BrfalseENUM)Code.BrfalseENUM.BEQenum;
+            public void compilar()
+            {
+                //Inicio Modificacion - Grupo 1 - 10/9/15
+                //Oculta Labels, RichTextBox y Buttons de Maquina Virtual. Oculta Monitor de Maquina Virtual   
+                Code.restaurarRichTextBox7conNegro();
+                richTextBox8.Visible = false;
+                richTextBox9.Visible = false;
+                pictureBox2.Visible = false;
+                tabControl2.Visible = true;
+                richTextBox7.Visible = true;
+                button3.Visible = button4.Visible = false;
+                richTextBox2.Visible = richTextBox4.Visible = richTextBox5.Visible = false;
+                label1.Visible = label2.Visible = label7.Visible = label8.Visible = label9.Visible = label10.Visible = label11.Visible = label12.Visible = label13.Visible = false;
+                //Fin Modificacion - Grupo 1 - 10/9/15
+                //   
+                Editor = (RichTextBox)pestania.SelectedTab.Controls[0];
+                // pantalla.Visible = true; //Pantalla del monitorcito
+                //pictureBox1.Visible = true;  //monitorcito
+                errorEnComilacion = false;
+                //para usar luego como cil[nroDeInstrCorriente].indBrFalse = brfalseVar[x.relop - Token.EQ]; //BGEenum, etc 
+                //para branches condicionales
+                //  public enum BrfalseENUM { BNEenum, BLTenum, BLEenum, BGTenum, BGEenum, BEQenum };
+                Code.brfalseVar = new Code.BrfalseENUM[6];
+                Code.brfalseVar[0] = (Code.BrfalseENUM)Code.BrfalseENUM.BNEenum;
+                Code.brfalseVar[1] = (Code.BrfalseENUM)Code.BrfalseENUM.BLTenum;
+                Code.brfalseVar[2] = (Code.BrfalseENUM)Code.BrfalseENUM.BLEenum;
+                Code.brfalseVar[3] = (Code.BrfalseENUM)Code.BrfalseENUM.BGTenum;
+                Code.brfalseVar[4] = (Code.BrfalseENUM)Code.BrfalseENUM.BGEenum;
+                Code.brfalseVar[5] = (Code.BrfalseENUM)Code.BrfalseENUM.BEQenum;
 
-               //para usar luego como cil[nroDeInstrCorriente].indBrTrue = brtrueVar[x.relop - Token.EQ]; //BGEenum, etc 
-               //  public enum BrtrueENUM { BEQenum, BGEenum, BGTenum, BLEenum, BLTenum, BNEenum };
-               Code.brtrueVar = new Code.BrtrueENUM[6];
-               Code.brtrueVar[0] = (Code.BrtrueENUM)Code.BrtrueENUM.BEQenum;
-               Code.brtrueVar[1] = (Code.BrtrueENUM)Code.BrtrueENUM.BGEenum;
-               Code.brtrueVar[2] = (Code.BrtrueENUM)Code.BrtrueENUM.BGTenum;
-               Code.brtrueVar[3] = (Code.BrtrueENUM)Code.BrtrueENUM.BLEenum;
-               Code.brtrueVar[4] = (Code.BrtrueENUM)Code.BrtrueENUM.BLTenum;
-               Code.brtrueVar[5] = (Code.BrtrueENUM)Code.BrtrueENUM.BNEenum;
-               Parser.pilita.tope = -1; //inicializacion de E Stack 
+                //para usar luego como cil[nroDeInstrCorriente].indBrTrue = brtrueVar[x.relop - Token.EQ]; //BGEenum, etc 
+                //  public enum BrtrueENUM { BEQenum, BGEenum, BGTenum, BLEenum, BLTenum, BNEenum };
+                Code.brtrueVar = new Code.BrtrueENUM[6];
+                Code.brtrueVar[0] = (Code.BrtrueENUM)Code.BrtrueENUM.BEQenum;
+                Code.brtrueVar[1] = (Code.BrtrueENUM)Code.BrtrueENUM.BGEenum;
+                Code.brtrueVar[2] = (Code.BrtrueENUM)Code.BrtrueENUM.BGTenum;
+                Code.brtrueVar[3] = (Code.BrtrueENUM)Code.BrtrueENUM.BLEenum;
+                Code.brtrueVar[4] = (Code.BrtrueENUM)Code.BrtrueENUM.BLTenum;
+                Code.brtrueVar[5] = (Code.BrtrueENUM)Code.BrtrueENUM.BNEenum;
+                Parser.pilita.tope = -1; //inicializacion de E Stack 
 
-               //Restaura Vars Locales
-               for (int i = 0; i < Parser.maxCantVarsLocales; i++) Parser.locals[i] = 0;
+                //Restaura Vars Locales
+                for (int i = 0; i < Parser.maxCantVarsLocales; i++) Parser.locals[i] = 0;
 
 
-               //Restaura Boton de continuar
-               if (Parser.ejecuta)
-               {
-                   Parser.muestraProducciones = false;
-                   Parser.muestraCargaDeInstrs = false;
-               }
-               else
-               {
-                  // Parser.muestraProducciones = true;
-                   Parser.muestraCargaDeInstrs = true;
-               }
+                //Restaura Boton de continuar
+                if (Parser.ejecuta)
+                {
+                    Parser.muestraProducciones = false;
+                    Parser.muestraCargaDeInstrs = false;
+                }
+                else
+                {
+                    // Parser.muestraProducciones = true;
+                    Parser.muestraCargaDeInstrs = true;
+                }
 
-               //pantalla.Text = ""; //Pantallita del monitor
-               //pantalla.Visible = false; ////Pantallita del monitor no visible
+                //pantalla.Text = ""; //Pantallita del monitor
+                //pantalla.Visible = false; ////Pantallita del monitor no visible
 
-               Program1.form1.richTextBox9.Text = ""; //salida real (con la maqu virtual real)
+                Program1.form1.richTextBox9.Text = ""; //salida real (con la maqu virtual real)
 
-               Parser.cantVarLocales = 0;
-               Parser.nroDeInstrCorriente = 0;
+                Parser.cantVarLocales = 0;
+                Parser.nroDeInstrCorriente = 0;
 
-               //Restaura scroll al principio
-               Editor.SelectionStart = 0; // al principio
-               Editor.ScrollToCaret();
+                //Restaura scroll al principio
+                Editor.SelectionStart = 0; // al principio
+                Editor.ScrollToCaret();
 
-               //limpia ventanas
-               richTextBox2.Text = ""; //Dejo vacio Stack
-               richTextBox3.Text = ""; //Dejo vacio Instr CIL
-               richTextBox4.Text = ""; //Vars Locales  
-               //richTextBox6.Text = "";   //Arbol de derivacion
+                //limpia ventanas
+                richTextBox2.Text = ""; //Dejo vacio Stack
+                richTextBox3.Text = ""; //Dejo vacio Instr CIL
+                richTextBox4.Text = ""; //Vars Locales  
+                //richTextBox6.Text = "";   //Arbol de derivacion
 
-               //redirige salida a "salida.txt"
-               StreamWriter sw = new StreamWriter("salida.txt");
-               sw.AutoFlush = true;
-               Console.SetOut(sw);  //redirige salida a sw = "salida.txt"
+                //redirige salida a "salida.txt"
+                StreamWriter sw = new StreamWriter("salida.txt");
+                sw.AutoFlush = true;
+                Console.SetOut(sw);  //redirige salida a sw = "salida.txt"
 
-               //debe releer pestania.SelectedTab.Controls[0] y alimentar program con el contenido de pestania.SelectedTab.Controls[0]
-               //relee pestania.SelectedTab.Controls[0]   
-               pestania.SelectedTab.Controls[0].Update();
-               string myString1 = Editor.Text;
-               //restaura color negro en pestania.SelectedTab.Controls[0]
-               Code.restaurarRichTextBox1conNegro();
+                //debe releer pestania.SelectedTab.Controls[0] y alimentar program con el contenido de pestania.SelectedTab.Controls[0]
+                //relee pestania.SelectedTab.Controls[0]   
+                pestania.SelectedTab.Controls[0].Update();
+                string myString1 = Editor.Text;
+                //restaura color negro en pestania.SelectedTab.Controls[0]
+                Code.restaurarRichTextBox1conNegro();
 
-               //alimentar program con el contenido de pestania.SelectedTab.Controls[0] (myString1)
-               if (!Parser.ejecuta) Parser.MessageBoxCon3Preg();
+                //alimentar program con el contenido de pestania.SelectedTab.Controls[0] (myString1)
+                if (!Parser.ejecuta) Parser.MessageBoxCon3Preg();
 
-               try
-               {
-                   Parser.inicializaCil();
+                try
+                {
+                    Parser.inicializaCil();
 
-                   /* Quitar los comentarios para que funcione el Scanner */
-                   if (ZZ.Program) Console.WriteLine("Main Compilador 2");
-                   if (ZZ.Principal)
-                   {
-                       Console.WriteLine("ha pasado new ScannerTest()");
-                       Console.WriteLine("ha pasado SCTest.CRLFLineSeparators()");
-                       Console.WriteLine("ha pasado SCTest.LFLineSeparators");
-                   }
-                   if (ZZ.Program) Console.WriteLine("pasó InvalidSymbols()\n\nTERMINÓ TODO EL SCANNER");
-                   /////////////////////////////////////////////////////////////////////////////
-                   //System.Windows.Forms.MessageBox.Show("Parser.Parse(myString1)");
-                   Parser.Parse(myString1);
-                   /////////////////////////////////////////////////////////////////////////////
-                   if (ZZ.Program) Console.WriteLine("Tab.mostrarTab().....al final");
-                   if (ZZ.Program) Tab.mostrarTab();
-                   ZZ.Program = false;
-                   if (ZZ.Program) Console.WriteLine("TERMINA TODO");
-                   if (ZZ.Program) Console.ReadKey();
-               }
-               catch (ErrorMio e1)
-               {
-                   int linea1 = e1.linea; int col1 = e1.columna; int sizeToken1 = e1.sizeToken;
-                   Editor.Select(Editor.GetFirstCharIndexFromLine(linea1 - 1) + col1 - 1, sizeToken1);
-                   Editor.SelectionColor = Color.Red;
-                   System.Windows.Forms.MessageBox.Show("error 3245..." + e1.msg);
-                   errorEnComilacion = true;
-               }
-               //Program1.form1.maquVirtualToolStripMenuItem.Enabled = true;
-               Program1.form1.depurarToolStripMenuItem.Enabled = true; 
+                    /* Quitar los comentarios para que funcione el Scanner */
+                    if (ZZ.Program) Console.WriteLine("Main Compilador 2");
+                    if (ZZ.Principal)
+                    {
+                        Console.WriteLine("ha pasado new ScannerTest()");
+                        Console.WriteLine("ha pasado SCTest.CRLFLineSeparators()");
+                        Console.WriteLine("ha pasado SCTest.LFLineSeparators");
+                    }
+                    if (ZZ.Program) Console.WriteLine("pasó InvalidSymbols()\n\nTERMINÓ TODO EL SCANNER");
+                    /////////////////////////////////////////////////////////////////////////////
+                    //System.Windows.Forms.MessageBox.Show("Parser.Parse(myString1)");
+                    Parser.Parse(myString1);
+                    /////////////////////////////////////////////////////////////////////////////
+                    if (ZZ.Program) Console.WriteLine("Tab.mostrarTab().....al final");
+                    if (ZZ.Program) Tab.mostrarTab();
+                    ZZ.Program = false;
+                    if (ZZ.Program) Console.WriteLine("TERMINA TODO");
+                    if (ZZ.Program) Console.ReadKey();
+                }
+                catch (ErrorMio e1)
+                {
+                    int linea1 = e1.linea; int col1 = e1.columna; int sizeToken1 = e1.sizeToken;
+                    Editor.Select(Editor.GetFirstCharIndexFromLine(linea1 - 1) + col1 - 1, sizeToken1);
+                    Editor.SelectionColor = Color.Red;
+                    System.Windows.Forms.MessageBox.Show("error 3245..." + e1.msg);
+                    errorEnComilacion = true;
+                }
+                //Program1.form1.maquVirtualToolStripMenuItem.Enabled = true;
+                Program1.form1.depurarToolStripMenuItem.Enabled = true;
 
-               sw.Close();
+                sw.Close();
 
-        } //Fin compilar()
+            } //Fin compilar()
 
 
         //private void button3_Click(object sender, EventArgs e)  //inicializar
@@ -728,8 +736,8 @@ namespace at.jku.ssw.cc //Compilador //text_Box_Mio
 
             //if (!errorEnComilacion) maquVirtual();
             //Parser.ejecuta = false;
-            tabControl1.Width -= 100;
-            label1.Visible = label2.Visible = label8.Visible = label9.Visible = label10.Visible = label11.Visible = label12.Visible = true;
+            //tabControl1.Width -= 100;
+            label1.Visible = label2.Visible = label8.Visible = label9.Visible = label10.Visible = label11.Visible = label12.Visible = label13.Visible = true;
             richTextBox2.Visible = richTextBox4.Visible = true;
             tabControl1.SelectedIndex = 2;
             tabControl2.Visible = false;
@@ -1412,6 +1420,16 @@ namespace at.jku.ssw.cc //Compilador //text_Box_Mio
         {
             acerca_de f = new acerca_de();
             f.Show();
+        }
+
+        private void richTextBox1_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void inspeccionarToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
         }
 
 

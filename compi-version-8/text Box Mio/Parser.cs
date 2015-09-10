@@ -250,7 +250,8 @@ namespace at.jku.ssw.cc {
         //Se cumple que:  (la == expected) => ejecuta Scan => token = ..."class"... y laToden = ..."ProgrPpal" 
 
 
-        Code.coloreaConRojo(true);   //colorea "class" en ventana de Edicion
+        Code.coloreaConRojo("token");
+        //Code.coloreaConRojo(true);   //colorea "class" en ventana de Edicion
         //El argumento "true" => que lo que va a colorear es "el token" (en este caso: "class").
         //Si el arg es "false" => que lo que va a colorear es "el laToken" 
 
@@ -263,8 +264,9 @@ namespace at.jku.ssw.cc {
         Check(Token.IDENT); // "ProgrPpal" => debo insertar el token en la tabla de símbolos
                             // es el comienzo del programa y abrir un nuevo alcance
         //Ahora token = "ProgrPpal" y laToken = "{"
-        
-        Code.coloreaConRojo(true);  //"class" ya lo pintó, ahora pinta "ProgrPpal"  (lo que hay en token)
+
+        Code.coloreaConRojo("token");
+        //Code.coloreaConRojo(true);  //"class" ya lo pintó, ahora pinta "ProgrPpal"  (lo que hay en token)
                                               
         Symbol prog = Tab.Insert(Symbol.Kinds.Prog, token.str, Tab.noType);//lo cuelga de universe
 
@@ -285,13 +287,16 @@ namespace at.jku.ssw.cc {
 
         Code.seleccLaProdEnLaGram(1);  //"PosDeclars = . | Declaration PosDeclars.";
         Parser.MessageBoxCon3Preg();
-        bool existeDecl = false;
+        
+        //bool existeDecl = false;
+        
         //bool bandarita = false; // bandera se encarga de verificar si existen declaraciones globales,constantes etc.
         //"Declaration = ConstDecl | VarDecl | ClassDecl."
 
         while (la != Token.LBRACE && la != Token.EOF) //Si no existen declaraciones, la = Token.LBRACE
         {
-            Code.coloreaConRojo(false); //si existiera una declaracion, as "int i", colorea "int";  (yaPintado = true)
+            Code.coloreaConRojo("latoken");
+            //Code.coloreaConRojo(false); //si existiera una declaracion, as "int i", colorea "int";  (yaPintado = true)
             //El argumento "false" => que no debe pintar el "token" (que en este caso seria "ProgrPpal"), sino el laToken (que es "int")
 
             //en este caso, debe "mirar hacia adelante" (laToken) 
@@ -303,7 +308,10 @@ namespace at.jku.ssw.cc {
 
             //Code.cargaProgDeLaGram("Declaration = ConstDecl | VarDecl | ClassDecl.");
             System.Windows.Forms.TreeNode hijodeclar = new System.Windows.Forms.TreeNode("Declaration = ConstDecl | VarDecl | ClassDecl.");
-            posDeclars.Nodes.Add(hijodeclar); existeDecl = true; 
+            posDeclars.Nodes.Add(hijodeclar); 
+            
+            //existeDecl = true; 
+            
             switch (la)
             {
                 case Token.CONST:
@@ -335,14 +343,15 @@ namespace at.jku.ssw.cc {
             Code.cargaProgDeLaGram("selccionó la 1 PosDeclars = . | Declaration PosDeclars.");
         }
 
-        Code.coloreaConRojo(false); //"{"
+        Code.coloreaConRojo("latoken");
+        //Code.coloreaConRojo(false); //"{"
         //El argumento "false" => que no debe pintar el "token" (que en este caso seria "ProgrPpal"), sino el laToken (que es "{")
 
         //en este caso, debe "mirar hacia adelante" (laToken) 
         //para determinar la opcion de la produccion "PosDeclars = . | Declaration PosDeclars."    
         //Si laToken es "{" => la opcion es "PosDeclars = .", otherwise: "PosDeclars = Declaration PosDeclars."
 
-        if (!existeDecl)
+        if (la!=Token.EOF)
         {
             //Code.cargaProgDeLaGram("PosDeclars = .");////////////////////////
             posDeclars.Nodes.Add(".");
@@ -357,7 +366,9 @@ namespace at.jku.ssw.cc {
         if (ZZ.parser) { Console.WriteLine("empieza {"); if (ZZ.readKey) Console.ReadKey(); };
 
         Check(Token.LBRACE);
-        Code.coloreaConRojo(true);  //ya lo pintó
+        //No es necesario pintar ya que el Token venia pintado desde antes
+        //Code.coloreaConRojo("token");
+        //Code.coloreaConRojo(true);  //ya lo pintó
         /////////
         program.Nodes.Add("'{'");
         ////////
@@ -384,15 +395,17 @@ namespace at.jku.ssw.cc {
 
         Check(Token.RBRACE);
         //Code.cargaProgDeLaGram("termina }"); //Ya estaba la produccion 
-        Code.coloreaConRojo(true);
+        Code.coloreaConRojo("token");
+        //Code.coloreaConRojo(true);
         //////
         program.Nodes.Add("}");
         /////
 
-
-        Program1.form1.richTextBox2.Visible = true;// new Program1.form1.richTextBox(); // 2.Visible; //   .Visible();
-        Program1.form1.button3.Visible = true;
-
+        //Inicio Modificacion - Grupo 1 - 10/9/15
+        //No es necesario mostrar este richtextbox y el boton hasta no ejecutar la maquina virtual
+        //Program1.form1.richTextBox2.Visible = true;// new Program1.form1.richTextBox(); // 2.Visible; //   .Visible();
+        //Program1.form1.button3.Visible = true;
+        //Fin Modificacion - Grupo 1 - 10/9/15
         if (ZZ.parser)
         {
             Console.WriteLine("antes de prog.locals = Tab.topScope.locals; Tab.CloseScope()");
@@ -438,7 +451,8 @@ namespace at.jku.ssw.cc {
         System.Windows.Forms.TreeNode hijo2 = new System.Windows.Forms.TreeNode("ConstDecl = 'const' Type ident '=' NumberOrCharConst");
         hijo1.Nodes.Add(hijo2);
         Check(Token.CONST);  //const int i = 3;
-        Code.coloreaConRojo(true);
+        Code.coloreaConRojo("token");
+        //Code.coloreaConRojo(true);
         /////
         hijo2.Nodes.Add("'const'");
         ////
@@ -462,7 +476,8 @@ namespace at.jku.ssw.cc {
         ////
         hijo2.Nodes.Add("ident");
         ////
-        Code.coloreaConRojo(true); 
+        Code.coloreaConRojo("token");
+        //Code.coloreaConRojo(true); 
         if (muestraProducciones) MessageBoxCon3Preg(); ;
         //token quedó con i, laToken con =
         // debo agregar a la tabla de símbolos un nuevo símbolo  
@@ -473,7 +488,9 @@ namespace at.jku.ssw.cc {
         Check(Token.ASSIGN);  //const
         ////
         hijo2.Nodes.Add("'='");
-        Code.coloreaConRojo(true); if (muestraProducciones) MessageBoxCon3Preg();
+        Code.coloreaConRojo("token");
+        //Code.coloreaConRojo(true); 
+        if (muestraProducciones) MessageBoxCon3Preg();
         //token quedó con =, laToken con 10
         ////
         System.Windows.Forms.TreeNode hijo3 = new System.Windows.Forms.TreeNode("NumberOrCharConst");
@@ -483,7 +500,8 @@ namespace at.jku.ssw.cc {
             case Token.NUMBER:
                 if (type != Tab.intType) Errors.Error("type debe ser int");
                 Check(Token.NUMBER);
-                Code.coloreaConRojo(true);
+                Code.coloreaConRojo("token");    
+                //Code.coloreaConRojo(true);
                 ////
                 hijo3.Nodes.Add("number");
                 ////
@@ -496,7 +514,8 @@ namespace at.jku.ssw.cc {
                 ////
                 hijo3.Nodes.Add("charConst");
                 ////
-                Code.coloreaConRojo(true); if (muestraProducciones) MessageBoxCon3Preg();
+                Code.coloreaConRojo("token");
+                //Code.coloreaConRojo(true); if (muestraProducciones) MessageBoxCon3Preg();
                 constante.val = token.val; //Seguro?
                 break;
             default: Errors.Error("def de const erronea");
@@ -508,7 +527,8 @@ namespace at.jku.ssw.cc {
         //Program1.form1.richTextBox10.Text = Tab.tabSimbString;
 
         Check(Token.SEMICOLON);
-        Code.coloreaConRojo(true);
+        Code.coloreaConRojo("token");
+        //Code.coloreaConRojo(true);
         ////
         hijo2.Nodes.Add("';'");
         ////
@@ -549,7 +569,8 @@ namespace at.jku.ssw.cc {
         hijo1.Nodes.Add(hijo2);
         ////
         // debo insertar el token en la tabla de símbolos
-        Code.coloreaConRojo(true);  //Ya viene pintado
+        Code.coloreaConRojo("token");
+        //Code.coloreaConRojo(true);  //Ya viene pintado
         cantVarLocales++; //provisorio: esto deberia hacerlo solo para el caso de var locales (no para var globales)
         Symbol vble = Tab.Insert(kind, token.str, type);   
         //vble no, poner simbolo (para pos, en int[] pos)
@@ -564,7 +585,8 @@ namespace at.jku.ssw.cc {
         while (la == Token.COMMA && la != Token.EOF) 
         {
             Scan(); // Check(Token.COMMA);
-            Code.coloreaConRojo(true);
+            Code.coloreaConRojo("token");
+            //Code.coloreaConRojo(true);
             Code.cargaProgDeLaGram("IdentifiersOpc = ',' ident  IdentifiersOpc.");//deberia extender el arbol
             ////
             hijo2.Nodes.Add("','");
@@ -573,7 +595,8 @@ namespace at.jku.ssw.cc {
 
             Check(Token.IDENT); //otro identif
             hijo2.Nodes.Add("ident");
-            Code.coloreaConRojo(true);
+            Code.coloreaConRojo("token");
+            //Code.coloreaConRojo(true);
             cantVarLocales++; //provisorio: esto deberia hacerlo solo para el caso de var locales (no para var globales)
 
             //if (muestraProducciones) MessageBoxCon3Preg();
@@ -585,7 +608,8 @@ namespace at.jku.ssw.cc {
         }
         Check(Token.SEMICOLON);
         hijo1.Nodes.Add("';'");
-        Code.coloreaConRojo(true);
+        Code.coloreaConRojo("token");
+        //Code.coloreaConRojo(true);
 
         Code.cargaProgDeLaGram("IdentifiersOpc = .");
     }
@@ -676,7 +700,8 @@ namespace at.jku.ssw.cc {
             {
                 
                 Check(Token.VOID); //token = void laToken = Main
-                Code.coloreaConRojo(true);  //pinta void //incluye if (muestraProducciones) MessageBoxCon3Preg();
+                Code.coloreaConRojo("token");
+                //Code.coloreaConRojo(true);  //pinta void //incluye if (muestraProducciones) MessageBoxCon3Preg();
                 //Code.cargaProgDeLaGram("MethodDeclsOpc = MethodDecl MethodDeclsOpc.");
 
                 //Una vez que encuentra "void", infiere que debe usar la opcion: methodDecl.... etc 
@@ -712,7 +737,8 @@ namespace at.jku.ssw.cc {
                 {
                     Type(out type);  //  token = UnTipo laToken = Main
                     Code.cargaProgDeLaGram("TypeOrVoid  = Type.");
-                    Code.coloreaConRojo(true);
+                    Code.coloreaConRojo("token");
+                    //Code.coloreaConRojo(true);
                     ///////////
                     //hay que cambiar hijo1 por methodDecl, e hijo2 por... 
                     System.Windows.Forms.TreeNode hijo2 = new System.Windows.Forms.TreeNode("TypeOrVoid = Type");
@@ -725,7 +751,8 @@ namespace at.jku.ssw.cc {
             if (muestraProducciones) MessageBoxCon3Preg();
 
             Check(Token.IDENT);  //Main por ej.  //token = Main, laToken = "("
-            Code.coloreaConRojo(true);
+            Code.coloreaConRojo("token");
+            //Code.coloreaConRojo(true);
             
             //hijo1.Nodes.Add("ident");
             //////
@@ -742,7 +769,8 @@ namespace at.jku.ssw.cc {
 
             
             Check(Token.LPAR);  //Si Main() => no tiene FormPars
-            Code.coloreaConRojo(true);
+            Code.coloreaConRojo("token");
+            //Code.coloreaConRojo(true);
 
 
             /////////
@@ -762,7 +790,8 @@ namespace at.jku.ssw.cc {
                 if (muestraProducciones) MessageBoxCon3Preg();
 
                 Check(Token.RPAR);
-                Code.coloreaConRojo(true);  //pinta el ")"
+                Code.coloreaConRojo("token");
+                //Code.coloreaConRojo(true);  //pinta el ")"
             }
             //y colgarlos de curMethod.locals  
             else
@@ -770,7 +799,8 @@ namespace at.jku.ssw.cc {
                 //infiere que no hay params => 1) debe venir un ")". 2) La pocion de la produccion es "."
                 //Code.cargaProgDeLaGram("Pars = .");
                 Check(Token.RPAR);
-                Code.coloreaConRojo(true);  //pinta el ")"
+                Code.coloreaConRojo("token");
+                //Code.coloreaConRojo(true);  //pinta el ")"
 
                 pars.Nodes.Add(".");
                 pars.Expand();
@@ -806,7 +836,8 @@ namespace at.jku.ssw.cc {
                 if (la == Token.IDENT)
                 {
                     banderita = true;
-                    Code.coloreaConRojo(false); //colorea "int"  en int i; 
+                    Code.coloreaConRojo("latoken");
+                    //Code.coloreaConRojo(false); //colorea "int"  en int i; 
 
                     //Infiere la 2° opcion de PosDeclars   aaaaaaaa
                     System.Windows.Forms.TreeNode declaration = new System.Windows.Forms.TreeNode("Declaration");
@@ -839,7 +870,8 @@ namespace at.jku.ssw.cc {
                 else { token = laToken; Errors.Error("espero una declaracion de variable"); }
             }
             Code.seleccLaProdEnLaGram(1);
-            Code.coloreaConRojo(false);  //"{"
+            Code.coloreaConRojo("latoken");
+            //Code.coloreaConRojo(false); "{"
             if (banderita == false)
             {
                 Code.cargaProgDeLaGram("PosDeclars =  .");
@@ -891,18 +923,21 @@ namespace at.jku.ssw.cc {
             //if (muestraProducciones) MessageBoxCon3Preg();
 
             Code.cargaProgDeLaGram("PossFormPars = FormPar CommaFormParsOpc.");
-            Code.coloreaConRojo(true);
+            Code.coloreaConRojo("token");
+            //Code.coloreaConRojo(true);
             //if (muestraProducciones) MessageBoxCon3Preg();
 
             Check(Token.IDENT); //x
-            Code.coloreaConRojo(true);
+            Code.coloreaConRojo("token");
+            //Code.coloreaConRojo(true);
 
             while (la == Token.COMMA && la != Token.EOF)
             {
                 Check(Token.COMMA);
                 
                 Code.cargaProgDeLaGram("CommaFormParsOpc = ',' FormPar CommaFormParsOpc.");
-                Code.coloreaConRojo(true);
+                Code.coloreaConRojo("token");
+                //Code.coloreaConRojo(true);
 
                 Type(out type);
                 Check(Token.IDENT);
@@ -910,7 +945,8 @@ namespace at.jku.ssw.cc {
                 Code.seleccLaProdEnLaGram(6);
 
                 Code.cargaProgDeLaGram("PossFormPars = FormPar CommaFormParsOpc.");
-                Code.coloreaConRojo(true);
+                Code.coloreaConRojo("token");
+                //Code.coloreaConRojo(true);
             }//Fin while
             Code.cargaProgDeLaGram("CommaFormParsOpc = .");
         }
@@ -932,7 +968,8 @@ namespace at.jku.ssw.cc {
         else
         {   //laToken=int, en int[]                                       
             Check(Token.IDENT); //=> token=int y laToken=[,  .....token=int y laToken=size, en int size 
-            Code.coloreaConRojo(true); //si viene de... yaPintado = true => no pinta nada
+            Code.coloreaConRojo("token");
+            //Code.coloreaConRojo(true); //si viene de... yaPintado = true => no pinta nada
             
             Symbol sym = Tab.Find(token.str);  //busca int  y devuelve el Symbol p/int
                          //Busca Table y devuelve el Symbol p/Table
@@ -954,7 +991,8 @@ namespace at.jku.ssw.cc {
             Code.seleccLaProdEnLaGram(13);
             //Code.cargaProgDeLaGram("LbrackOpc = .| '[' ']'.");
 
-            Code.coloreaConRojo(false); //un "[" o lo que sigue al type (un ident en int ident1)
+            Code.coloreaConRojo("latoken");
+            //Code.coloreaConRojo(false); //un "[" o lo que sigue al type (un ident en int ident1)
             if (la == Token.LBRACK)  // 
                 {//int[]
                     Code.cargaProgDeLaGram("LbrackOpc = '[' ']'.");
@@ -1014,7 +1052,8 @@ namespace at.jku.ssw.cc {
             //if (ZZ.readKey) Console.ReadKey();
         if (la == Token.IDENT) // First de Designator /// 
         {
-            Code.coloreaConRojo(true); //laToken (ident)  "writeln"  ya pintado  o "var1" en var1 = 10;
+            Code.coloreaConRojo("token");
+            //Code.coloreaConRojo(true); //laToken (ident)  "writeln"  ya pintado  o "var1" en var1 = 10;
             //if (muestraProducciones) MessageBoxCon3Preg();
             Item itemIzq, itemDer; // = new Item();  // 
             Code.cargaProgDeLaGram("Statement = Designator RestOfStatement");
@@ -1039,7 +1078,8 @@ namespace at.jku.ssw.cc {
                     Code.cargaProgDeLaGram("RestOfStatement = '=' Expr.");
                     Code.cargaProgDeLaGram("Expr = OpcMinus Term OpcAddopTerm.");
 
-                    Code.coloreaConRojo(true); //("=")
+                    Code.coloreaConRojo("token");
+                    //Code.coloreaConRojo(true); //("=")
                     ////////////////
                     RestOfstatement.Nodes.Add("=");
                     System.Windows.Forms.TreeNode restofhijo2 = new System.Windows.Forms.TreeNode("Expr = OpcMinus Term OpcAddopTerm");
@@ -1283,7 +1323,8 @@ namespace at.jku.ssw.cc {
                     System.Windows.Forms.TreeNode hijowriteln = new System.Windows.Forms.TreeNode("writeln");
                     padre.Nodes.Add(hijowriteln);
                     ///////////////////////
-                    Code.coloreaConRojo(true); //ya lo pintó
+                    Code.coloreaConRojo("token");
+                    //Code.coloreaConRojo(true); //ya lo pintó
                     //token queda con WRITELN y laToken =  "(" y ch con Comm Doble
 
                     Code.cargaProgDeLaGram("Statement = writeln '(' argString ')' ';' ");
@@ -1300,9 +1341,11 @@ namespace at.jku.ssw.cc {
                     //debe quedar token = "("  y laToken = "texto posiblem vacio"               
                     if (la == Token.LPAR) //ch = Comm Doble
                      {
-                         Code.coloreaConRojo(false); //pinta el "("
-                         Code.coloreaConRojo(true); //solo para que deje yaPintado en false
-                        //Scan(); //token = "("
+                         Code.coloreaConRojo("latoken");
+                         //Code.coloreaConRojo(false); //pinta el "("
+                         Code.coloreaConRojo("token");
+                         //Code.coloreaConRojo(true); //solo para que deje yaPintado en false
+                         //Scan(); //token = "("
                          hijowriteln.Nodes.Add("'('");
                         if (Scanner.ch != '\"') 
                             Errors.Error("Se esperaba una COMILLA DOBLE");
@@ -1323,8 +1366,9 @@ namespace at.jku.ssw.cc {
                             token.str = argStr; // excluye las comillas dobles
                             //token.line lo deja =
                             token.col = token.col - argStr.Length; //+ 1; // -3; //DESPUES DEL "("
-                            
-                            Code.coloreaConRojo(true);
+
+                            Code.coloreaConRojo("token");
+                            //Code.coloreaConRojo(true);
 
 
                             Parser.nroDeInstrCorriente++;
@@ -1346,14 +1390,16 @@ namespace at.jku.ssw.cc {
                             la = laToken.kind;
                             Code.il.EmitWriteLine(argStr);
                             Check(Token.RPAR);
-                            Code.coloreaConRojo(true);
+                            Code.coloreaConRojo("token");
+                            //Code.coloreaConRojo(true);
                             //////////////////////////////
                             hijowriteln.Nodes.Add("'argString'"); 
                             hijowriteln.Nodes.Add("')'");
                             /////////////////////////////
                                                //+ Code.blancos(22-11-argStr.Length));
                             Check(Token.SEMICOLON);
-                            Code.coloreaConRojo(true);
+                            Code.coloreaConRojo("token");
+                            //Code.coloreaConRojo(true);
                             //////////////////////
                             hijowriteln.Nodes.Add("';'");
                             /////////////////////
@@ -1413,12 +1459,14 @@ namespace at.jku.ssw.cc {
                     //Code.il.EmitWriteLine(1000);
 
                     Check(Token.RPAR);
-                    Code.coloreaConRojo(true);
+                    Code.coloreaConRojo("token");
+                    //Code.coloreaConRojo(true);
                     //////
                     hijowrite.Nodes.Add("')'");
                     //////
                     Check(Token.SEMICOLON);
-                    Code.coloreaConRojo(true);
+                    Code.coloreaConRojo("token");
+                    //Code.coloreaConRojo(true);
                     //////
                     hijowrite.Nodes.Add("';'");
                     //////
@@ -1451,7 +1499,8 @@ namespace at.jku.ssw.cc {
         /////
         hijomayor.Nodes.Add("{");
         //////
-        Code.coloreaConRojo(true);  //Ya lo pintó
+        Code.coloreaConRojo("token");
+        //Code.coloreaConRojo(true);  //Ya lo pintó
         Code.seleccLaProdEnLaGram(16);
         Code.cargaProgDeLaGram("Block = '{'  StatementsOpc '}'.");
         Code.seleccLaProdEnLaGram(17); //StatementsOpc = . | Statement StatementsOpc.
@@ -1463,7 +1512,8 @@ namespace at.jku.ssw.cc {
               || la == Token.RETURN || la == Token.READ || la == Token.WRITE || la == Token.WRITELN
               || la == Token.LBRACE || la == Token.SEMICOLON) && la != Token.EOF)
             {
-                Code.coloreaConRojo(false);  //pinta el primer token de la sentencia (writeln por ej)
+                Code.coloreaConRojo("latoken");
+                //Code.coloreaConRojo(false);  //pinta el primer token de la sentencia (writeln por ej)
                 Code.cargaProgDeLaGram("StatementsOpc = Statement StatementsOpc.");
                 Code.seleccLaProdEnLaGram(18);
                 ///////
@@ -1509,7 +1559,8 @@ namespace at.jku.ssw.cc {
         hijomayor.Nodes.Add("'}'");
         ////////////////
         Code.cargaProgDeLaGram("StatementsOpc = .");
-        Code.coloreaConRojo(true);  //ya habia pintado el ")", ahora pinta "}"
+        Code.coloreaConRojo("token");
+        //Code.coloreaConRojo(true);  //ya habia pintado el ")", ahora pinta "}"
         if (Parser.muestraProducciones)
                 System.Windows.Forms.MessageBox.Show("Termina bloque ");
 
@@ -1689,7 +1740,8 @@ namespace at.jku.ssw.cc {
             Code.cargaProgDeLaGram("Term = Factor  OpcMulopFactor.");
             Code.cargaProgDeLaGram("Factor = Designator  OpcRestOfMethCall.");
             Code.cargaProgDeLaGram("Designator = ident opcRestOfDesignator.");
-            Code.coloreaConRojo(false);//1º parte de Term (y de Factor), por ej 123
+            Code.coloreaConRojo("latoken");
+            //Code.coloreaConRojo(false);//1º parte de Term (y de Factor), por ej 123
             if (muestraProducciones) MessageBoxCon3Preg();
             Term(out item);
         }
@@ -1704,7 +1756,8 @@ namespace at.jku.ssw.cc {
 
                 Code.cargaProgDeLaGram("Addop = '+'.");
                 Code.cargaProgDeLaGram("Term = Factor OpcMulopFactor.");
-                Code.coloreaConRojo(true);
+                Code.coloreaConRojo("token");
+                //Code.coloreaConRojo(true);
                 if (muestraProducciones) MessageBoxCon3Preg();
             }
             else if (la == Token.MINUS)
@@ -1713,12 +1766,14 @@ namespace at.jku.ssw.cc {
 
                 Code.cargaProgDeLaGram("Addop = '-'.");
                 Code.cargaProgDeLaGram("Term = Factor OpcMulopFactor.");
-                Code.coloreaConRojo(true);
+                Code.coloreaConRojo("token");
+                //Code.coloreaConRojo(true);
                 if (muestraProducciones) MessageBoxCon3Preg();
                 //cil[nroDeInstrCorriente].accionInstr = AccionInstr.add;
             }
             else op = Code.DUP; //nunca entra por acá, solo p/q no de error
-            Code.coloreaConRojo(true);
+            Code.coloreaConRojo("token");
+            //Code.coloreaConRojo(true);
 
             Code.Load(item);
             Term(out itemSig);
@@ -1814,7 +1869,8 @@ namespace at.jku.ssw.cc {
             Code.cargaProgDeLaGram("Term = Factor  OpcMulopFactor.");
             Code.cargaProgDeLaGram("Factor = Designator  OpcRestOfMethCall.");
             Code.cargaProgDeLaGram("Designator = ident opcRestOfDesignator.");
-            Code.coloreaConRojo(false);//1º parte de Term (y de Factor), por ej 123
+            Code.coloreaConRojo("latoken");
+            //Code.coloreaConRojo(false);//1º parte de Term (y de Factor), por ej 123
             ///////
             System.Windows.Forms.TreeNode hijominus = new System.Windows.Forms.TreeNode("OpcMinus= .|'-'");
             hijominus.Nodes.Add("OpcMinus= .");
@@ -1845,7 +1901,8 @@ namespace at.jku.ssw.cc {
 
                 Code.cargaProgDeLaGram("Addop = '+'.");
                 Code.cargaProgDeLaGram("Term = Factor OpcMulopFactor.");
-                Code.coloreaConRojo(true);
+                Code.coloreaConRojo("token");
+                //Code.coloreaConRojo(true);
                 //////////////
                 System.Windows.Forms.TreeNode hijito = new System.Windows.Forms.TreeNode("Addop = '+' | '-'");
                 hijito.Nodes.Add("'+'");
@@ -1859,7 +1916,8 @@ namespace at.jku.ssw.cc {
 
                 Code.cargaProgDeLaGram("Addop = '-'.");
                 Code.cargaProgDeLaGram("Term = Factor OpcMulopFactor.");
-                Code.coloreaConRojo(true);
+                Code.coloreaConRojo("token");
+                //Code.coloreaConRojo(true);
                 //////////////
                 System.Windows.Forms.TreeNode hijito = new System.Windows.Forms.TreeNode("Addop = '+' | '-'");
                 hijito.Nodes.Add("'-'");
@@ -1869,7 +1927,8 @@ namespace at.jku.ssw.cc {
                 //cil[nroDeInstrCorriente].accionInstr = AccionInstr.add;
             }
             else op = Code.DUP; //nunca entra por acá, solo p/q no de error
-            Code.coloreaConRojo(true);
+            Code.coloreaConRojo("token");
+            //Code.coloreaConRojo(true);
 
             Code.Load(item);
             //////////////
@@ -1926,11 +1985,13 @@ namespace at.jku.ssw.cc {
                 {
                     Check(Token.PERIOD); //caso del val . pos
                     Code.cargaProgDeLaGram("opcRestOfDesignator =  '.' ident.");
-                    Code.coloreaConRojo(true);
+                    Code.coloreaConRojo("token");
+                    //Code.coloreaConRojo(true);
                     if (muestraProducciones) MessageBoxCon3Preg();
 
                     Check(Token.IDENT); //pos
-                    Code.coloreaConRojo(true);
+                    Code.coloreaConRojo("token");
+                    //Code.coloreaConRojo(true);
                     if (muestraProducciones) MessageBoxCon3Preg();
 
                     if (ZZ.parser) Console.WriteLine(" . " + token.str + " (pos)"); //pos
@@ -1965,7 +2026,8 @@ namespace at.jku.ssw.cc {
                     {
                         Check(Token.LBRACK);
                         Code.cargaProgDeLaGram("opcRestOfDesignator =  '[' Expr ']'.");
-                        Code.coloreaConRojo(true);
+                        Code.coloreaConRojo("token");
+                        //Code.coloreaConRojo(true);
                         if (muestraProducciones) MessageBoxCon3Preg();
 
                         Code.Load(item);
@@ -1989,7 +2051,8 @@ namespace at.jku.ssw.cc {
         else
         {
             Code.cargaProgDeLaGram("opcRestOfDesignator =  .");
-            Code.coloreaConRojo(false); //lo que sigue al designator (por ej "=", en Designator = Expr)
+            Code.coloreaConRojo("latoken");
+            //Code.coloreaConRojo(false); //lo que sigue al designator (por ej "=", en Designator = Expr)
             if (muestraProducciones) MessageBoxCon3Preg();
 
             Code.Load(item);  //(item.val ya tiene valor)
@@ -2006,7 +2069,8 @@ namespace at.jku.ssw.cc {
             {//meth(params)
                 Check(Token.LPAR);
                 Code.cargaProgDeLaGram("OpcRestOfMethCall = '(' OpcActPars ')'.");
-                Code.coloreaConRojo(true); // el "("
+                Code.coloreaConRojo("token");
+                //Code.coloreaConRojo(true); // el "("
                 if (muestraProducciones) MessageBoxCon3Preg();
                 if (la == Token.MINUS || la == Token.IDENT ||
                     la == Token.NUMBER || la == Token.CHARCONST ||
@@ -2017,7 +2081,8 @@ namespace at.jku.ssw.cc {
             else
             {
                 Code.cargaProgDeLaGram("OpcRestOfMethCall = .");
-                Code.coloreaConRojo(false); // el "("
+                Code.coloreaConRojo("latoken");
+                //Code.coloreaConRojo(false); // el "("
                 if (muestraProducciones) MessageBoxCon3Preg();
             }
         }
@@ -2027,7 +2092,8 @@ namespace at.jku.ssw.cc {
                 case Token.NUMBER:
                     Check(Token.NUMBER);
                     Code.cargaProgDeLaGram("Factor = number.");
-                    Code.coloreaConRojo(true);
+                    Code.coloreaConRojo("token");
+                    //Code.coloreaConRojo(true);
                     if (muestraProducciones) MessageBoxCon3Preg();
 
                     item = new Item(token.val);//Nuevo
@@ -2116,13 +2182,15 @@ namespace at.jku.ssw.cc {
                 {
                     case Token.TIMES:
                         Check(Token.TIMES); op = Code.MUL; opString = "mul       ";
-                        Code.coloreaConRojo(true);
+                        Code.coloreaConRojo("token");
+                        //Code.coloreaConRojo(true);
                         Code.cargaProgDeLaGram("Mulop =	'*'.");
                         if (muestraProducciones) MessageBoxCon3Preg();
                         break;
                     case Token.SLASH:
                         Check(Token.SLASH); op = Code.DIV; opString = "div       ";
-                        Code.coloreaConRojo(true);
+                        Code.coloreaConRojo("token");
+                        //Code.coloreaConRojo(true);
                         Code.cargaProgDeLaGram("Mulop =	'/'.");
                         if (muestraProducciones) MessageBoxCon3Preg();
                         break;
@@ -2156,7 +2224,8 @@ namespace at.jku.ssw.cc {
                     System.Windows.Forms.MessageBox.Show("aun no implementado 343323");
             }//Fin while
             Code.cargaProgDeLaGram("OpcMulopFactor = .");
-            Code.coloreaConRojo(false); //no hay más "*"...
+            Code.coloreaConRojo("latoken");
+            //Code.coloreaConRojo(false); //no hay más "*"...
             if (muestraProducciones) MessageBoxCon3Preg();
         }
         else
@@ -2189,7 +2258,8 @@ namespace at.jku.ssw.cc {
                 switch(la){
                     case Token.TIMES:
                         Check(Token.TIMES); op = Code.MUL;  opString = "mul       ";
-                        Code.coloreaConRojo(true);
+                        Code.coloreaConRojo("token");
+                        //Code.coloreaConRojo(true);
                         Code.cargaProgDeLaGram("Mulop =	'*'."); banderita = true;
                         //////////
                         hijoOpcMulop.Nodes.Add("Mulop =	'*'");
@@ -2198,7 +2268,8 @@ namespace at.jku.ssw.cc {
                         break;
                     case Token.SLASH:
                         Check(Token.SLASH); op = Code.DIV; opString = "div       "; banderita = true;
-                        Code.coloreaConRojo(true);
+                        Code.coloreaConRojo("token");
+                        //Code.coloreaConRojo(true);
                         Code.cargaProgDeLaGram("Mulop =	'/'.");
                         //////////
                         hijoOpcMulop.Nodes.Add("Mulop =	'/'");
@@ -2242,7 +2313,8 @@ namespace at.jku.ssw.cc {
             {
                 padre.Nodes.Add("OpcMulopFactor = .");
                 Code.cargaProgDeLaGram("OpcMulopFactor = .");
-                Code.coloreaConRojo(false); //no hay más "*"...
+                Code.coloreaConRojo("latoken");
+                //Code.coloreaConRojo(false); //no hay más "*"...
             }
             if (muestraProducciones) MessageBoxCon3Preg();
         }
@@ -2277,7 +2349,8 @@ namespace at.jku.ssw.cc {
             {//meth(params)
                 Check(Token.LPAR);
                 Code.cargaProgDeLaGram("OpcRestOfMethCall = '(' OpcActPars ')'.");
-                Code.coloreaConRojo(true); // el "("
+                Code.coloreaConRojo("token");
+                //Code.coloreaConRojo(true); // el "("
                 if (muestraProducciones) MessageBoxCon3Preg();
                 if (la == Token.MINUS || la == Token.IDENT ||
                     la == Token.NUMBER || la == Token.CHARCONST ||
@@ -2288,7 +2361,8 @@ namespace at.jku.ssw.cc {
             else
             {
                 Code.cargaProgDeLaGram("OpcRestOfMethCall = .");
-                Code.coloreaConRojo(false); // el "("
+                Code.coloreaConRojo("latoken");
+                //Code.coloreaConRojo(false); // el "("
                 if (muestraProducciones) MessageBoxCon3Preg();
             }
         }
@@ -2298,7 +2372,8 @@ namespace at.jku.ssw.cc {
                 case Token.NUMBER:
                     Check(Token.NUMBER);
                     Code.cargaProgDeLaGram("Factor = number.");
-                    Code.coloreaConRojo(true);
+                    Code.coloreaConRojo("token");
+                    //Code.coloreaConRojo(true);
                     /////
                     System.Windows.Forms.TreeNode hijonumber = new System.Windows.Forms.TreeNode("Factor = number.");
                     padre.Nodes.Add(hijonumber);
@@ -2415,7 +2490,8 @@ namespace at.jku.ssw.cc {
                 {
                     Check(Token.PERIOD); //caso del val . pos
                     Code.cargaProgDeLaGram("opcRestOfDesignator =  '.' ident.");
-                    Code.coloreaConRojo(true);
+                    Code.coloreaConRojo("token");
+                    //Code.coloreaConRojo(true);
                      ///////
                     System.Windows.Forms.TreeNode hijo3 = new System.Windows.Forms.TreeNode("opcRestOfDesignator =  '.' ident.");
                     hijo2.Nodes.Add(hijo3);
@@ -2424,7 +2500,8 @@ namespace at.jku.ssw.cc {
                     if (muestraProducciones) MessageBoxCon3Preg();
 
                     Check(Token.IDENT); //pos
-                    Code.coloreaConRojo(true);
+                    Code.coloreaConRojo("token");
+                    //Code.coloreaConRojo(true);
                     hijo3.Nodes.Add("'Ident'");
                     if (muestraProducciones) MessageBoxCon3Preg();
 
@@ -2460,7 +2537,8 @@ namespace at.jku.ssw.cc {
                     {
                         Check(Token.LBRACK);
                         Code.cargaProgDeLaGram("opcRestOfDesignator =  '[' Expr ']'.");
-                        Code.coloreaConRojo(true);
+                        Code.coloreaConRojo("token");
+                        //Code.coloreaConRojo(true);
                         if (muestraProducciones) MessageBoxCon3Preg();
 
                         Code.Load(item);
@@ -2484,7 +2562,8 @@ namespace at.jku.ssw.cc {
         else
         {
             Code.cargaProgDeLaGram("opcRestOfDesignator =  .");
-            Code.coloreaConRojo(false); //lo que sigue al designator (por ej "=", en Designator = Expr)
+            Code.coloreaConRojo("latoken");
+            //Code.coloreaConRojo(false); //lo que sigue al designator (por ej "=", en Designator = Expr)
             //////
             hijo2.Nodes.Add("opcRestOfDesignator =  .");
             //////

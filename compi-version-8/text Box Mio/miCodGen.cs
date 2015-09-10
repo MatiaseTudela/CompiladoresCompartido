@@ -179,12 +179,61 @@ namespace at.jku.ssw.cc {
                      new Font(Program1.form1.richTextBox7.Font.FontFamily,
                               Program1.form1.richTextBox7.Font.Size, FontStyle.Regular);
         }
-
+        //Inicio Modificacion - Grupo 1 - 10/9/15
         /// <summary>
-        /// true => colorea el Token. False => colorea laToken
+        /// "token" : Pinta Token
+        /// "latoken" : Pinta LaToken
         /// </summary>
         /// <param name="colorearToken"></param>
-        public static void coloreaConRojo(bool colorearToken)  //Editor  si el false, lo que colorea es laToken
+
+        public static void coloreaConRojo(string pintar)  //Editor  si el false, lo que colorea es laToken
+        {
+            //System.Windows.Forms.MessageBox.Show("****");    
+            int linea1 = -1; int col1 = -1;
+            int sizeToken1 = -1; ;
+            if (pintar == "token")
+            {
+                if (Parser.yaPintada)
+                {
+                    Parser.yaPintada = false; //para los tokens que siguen
+                    return;
+                }
+                else
+                {
+                    linea1 = Parser.token.line; col1 = Parser.token.col;
+                    if (Parser.token.str == null) sizeToken1 = 1;
+                    else sizeToken1 = Parser.token.str.Length;
+                }
+            }
+            else
+            {   //Pintar = latoken
+                linea1 = Parser.laToken.line; col1 = Parser.laToken.col;
+
+                if (Parser.laToken.str == null) sizeToken1 = 1;
+                else sizeToken1 = Parser.laToken.str.Length;
+                Parser.yaPintada = true;
+            }
+
+            restaurarRichTextBox1conNegro();
+            Program1.form1.Editor.Select(Program1.form1.Editor.GetFirstCharIndexFromLine(linea1 - 1)
+                                                                       + col1 - 1,
+                                               sizeToken1);
+            Program1.form1.Editor.SelectionColor = System.Drawing.Color.Red;
+            Program1.form1.Editor.SelectionFont =
+                      new Font(Program1.form1.Editor.Font.FontFamily,
+                               Program1.form1.Editor.Font.Size, FontStyle.Bold);
+
+            if (linea1 % 14 == 0 && linea1 != 0)
+            {
+                Program1.form1.Editor.SelectionStart =
+                      Program1.form1.richTextBox3.GetFirstCharIndexFromLine((linea1 / 13) * 13);
+                Program1.form1.Editor.ScrollToCaret();
+            }
+            if (Parser.muestraProducciones) Parser.MessageBoxCon3Preg();
+        }
+
+        //Fin Modificacion - Grupo 1 - 10/9/15
+        /*public static void coloreaConRojo(bool colorearToken)  //Editor  si el false, lo que colorea es laToken
 
         {
             //System.Windows.Forms.MessageBox.Show("****");    
@@ -229,7 +278,7 @@ namespace at.jku.ssw.cc {
                     Program1.form1.Editor.ScrollToCaret();
                 }
                 if (Parser.muestraProducciones)  Parser.MessageBoxCon3Preg();  
-        }
+        }*/
 
         public static void cargaInstr(string instr)
         {
