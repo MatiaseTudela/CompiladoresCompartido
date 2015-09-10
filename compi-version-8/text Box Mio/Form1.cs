@@ -108,6 +108,11 @@ namespace at.jku.ssw.cc //Compilador //text_Box_Mio
             }
         public void compilar()
            {
+               richTextBox8.Visible = false;
+               richTextBox9.Visible = false;
+               richTextBox2.Visible = true;
+               pictureBox2.Visible = false;
+               tabControl2.Visible = true;
                Editor = (RichTextBox)pestania.SelectedTab.Controls[0];
                // pantalla.Visible = true; //Pantalla del monitorcito
                //pictureBox1.Visible = true;  //monitorcito
