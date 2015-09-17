@@ -741,6 +741,7 @@ namespace at.jku.ssw.cc //Compilador //text_Box_Mio
             richTextBox2.Visible = richTextBox4.Visible = true;
             tabControl1.SelectedIndex = 2;
             tabControl2.Visible = false;
+            button3.Visible = true;
             richTextBox8.Visible = richTextBox9.Visible = true;
             maquVirtual();
 
